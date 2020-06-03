@@ -12,7 +12,7 @@
 	</form>
 
 	<?php
-		if (isset($_POST)) 
+		if (isset($_POST['btn_submit'])) 
 		{
 			$fh = fopen($_FILES['file']['tmp_name'], 'r+');
 			$lines = array();
