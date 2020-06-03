@@ -7,14 +7,20 @@
 </head>
 	<body>
 	<form action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+		Converter para UTF8?
+		<select name="utf8Encode">
+			<option value="1">SIM</option>
+			<option value="0">NAO</option>
+		</select>
+		<br>
 		<input type="file" name="file">
 		<input type="submit" name="btn_submit" value="Upload File" />
 	</form>
 
 	<?php
-		if (isset($_POST['btn_submit'])) 
+		if ($fh = @fopen($_FILES['file']['tmp_name'], 'r+')) 
 		{
-			$fh = fopen($_FILES['file']['tmp_name'], 'r+');
+			$encode = $_POST['utf8Encode'];
 			$lines = array();
 			while( ($row = fgetcsv($fh)) !== FALSE ) 
 			{
@@ -23,7 +29,7 @@
 			echo "<pre>";
 			foreach ($lines as $key => $line) 
 			{
-				$result = utf8_encode($line[0]);
+				$result = ($encode==1)?utf8_encode($line[0]):$line[0];
 				var_dump($result);
 			}
 		}
