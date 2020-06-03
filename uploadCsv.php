@@ -14,7 +14,7 @@
 		</select>
 		<br>
 		<input type="file" name="file">
-		<input type="submit" name="btn_submit" value="Upload File" />
+		<input type="submit" name="btn_submit" value="Upload File" accept=".csv" />
 	</form>
 
 	<?php
