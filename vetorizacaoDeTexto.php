@@ -142,3 +142,26 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	}
 	?>
 </table>
+
+<br>
+<br>
+
+<div align="center">
+<?php
+foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
+	{
+		if ((strlen($palavra)>=$minLetras) && ($repeticoes >= $minRepet)) 
+		{
+			$valida = 1;
+			$repeticoes *=20;
+			$possbilidade =  array(1,0);
+			$posicoes = array_rand($possbilidade) == 1?"vertical-lr":"horintal-tb";
+			$br = array_rand($possbilidade) == 1?"<br>":"";
+			echo'<text align="center"  style="font-size: '.$repeticoes.'px; font-family: Impact;  
+			writing-mode: '.$posicoes.';"> '
+			.$palavra.
+			' </text>'.$br;
+		}
+	}
+?>
+</div>
