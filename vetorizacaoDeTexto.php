@@ -1,7 +1,7 @@
 <?php
 class Vetor
 {
-	function preparaTexto($texto,$excNum)
+	function preparaTexto($texto,$excNum="false")
 	{
 		$texto = strtolower($texto);
 		if ($excNum=="checked") 
@@ -11,6 +11,7 @@ class Vetor
 				$texto = str_replace($i, "", $texto);
 			}
 		}
+		//BUG não está mantendo somente numeros, ele mantem numeros somente quando é digitado junto ao texto ex: casa1 ele mantem ou retira o 1, porém quando digito "1,2,3" ele buga
 		$texto = preg_replace('/[áàãâä]/ui', 'a', $texto);
 		$texto = preg_replace('/[éèêë]/ui', 'e', $texto);
 		$texto = preg_replace('/[íìîï]/ui', 'i', $texto);
@@ -20,7 +21,6 @@ class Vetor
 		$texto = preg_replace('/[^a-z0-9]/i', '_', $texto);
 		$texto = preg_replace('/_+/', '_', $texto); 
 		$texto = str_replace(",", "", $texto);
-		$texto = str_replace(",,", ",", $texto);//acho que nao funciona
 		$texto = str_replace("	", " ", $texto);
 		$texto = str_replace("  ", " ", $texto);
 		$texto = str_replace(" ", ",", $texto);
@@ -28,7 +28,27 @@ class Vetor
 		return $texto;
 	}
 
-	function tratamento($texto,$palavrasPorFrase=1,$txtExcluir="",$excNum)
+	function mantemPalavrasExclusivas($arrOriginal,$txtManter)
+	{
+		$texto="";
+		$arrManter = explode(",", $txtManter);
+		foreach ($arrOriginal as $key => $palavraOriginal) 
+		{
+			foreach ($arrManter as $key => $palavraManter) 
+			{
+				if ($palavraOriginal == $palavraManter) 
+				{
+					$texto .=$palavraOriginal.$separador;
+				}
+				$separador=",";
+			}
+		}
+		$arrModificado = explode(",", $texto);
+		return $arrModificado;
+
+	}
+
+	function vetoriza($texto,$palavrasPorFrase=1,$txtExcluir="",$excNum,$txtManter="")
 	{
 		$texto = $this->preparaTexto($texto,$excNum);
 		$arrExcluir = $this->preparaTexto($txtExcluir,$excNum);
@@ -41,6 +61,13 @@ class Vetor
 		}
 
 		$array = explode(",", $texto);
+
+		if (!empty($txtManter)) 
+		{
+			$txtManter = $this->preparaTexto($txtManter);
+			$array = $this->mantemPalavrasExclusivas($array,$txtManter);
+		}
+
 		$txtFrase = NULL;
 		$separador=NULL;
 
@@ -55,7 +82,7 @@ class Vetor
 		return $array;
 	}
 
-	function repeticoes($chave=null, $arr=null)
+	function contaRepeticoes($chave=null, $arr=null)
 	{
 		$result =(array_count_values($arr));
 		return $result[$chave];
@@ -70,7 +97,7 @@ class Vetor
 		{
 			if ((!in_array($chave, $arrVerificado))&&(!empty($chave))) 
 			{
-			$countRepeticoes = $this->repeticoes($chave,$arrText);
+			$countRepeticoes = $this->contaRepeticoes($chave,$arrText);
 			$arrPalavraRepeticoes += array("$chave"  =>"$countRepeticoes");
 			}
 			array_push($arrVerificado, $chave);
@@ -90,9 +117,14 @@ $minRepet = isset($_POST['minRepet'])?$_POST['minRepet']:2;
 $palavrasPorFrase = isset($_POST['palavrasPorFrase'])?$_POST['palavrasPorFrase']:1;
 $txtExcluir = isset($_POST['txtExcluir'])?$_POST['txtExcluir']: $preposicoesExemplo;
 $excNum = isset($_POST['excNum'])?"checked":"";
+$gNuvem = isset($_POST['gNuvem'])?"checked":"false";
+$txtManter = isset($_POST['txtManter'])?$_POST['txtManter']:null;
+
+// echo "<pre>";
+// var_dump($_POST);
 
 $vetor = new Vetor;
-$arrText = $vetor->tratamento($texto,$palavrasPorFrase,$txtExcluir,$excNum);
+$arrText = $vetor->vetoriza($texto,$palavrasPorFrase,$txtExcluir,$excNum,$txtManter);
 $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 ?>
 
@@ -105,9 +137,13 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	<br>
 	<br>Minimo de repeticoes no texto >= <input type="number" name="minRepet" value="<?= $minRepet ?>"> OBS: 2 é o minimo recomendado
 	<br>
-	<br>Excluir palavras/preposições:<br><textarea rows="4" cols="100" name="txtExcluir" placeholder="EX: AMOR,CAFE,CARRO"><?= $txtExcluir ?></textarea> 
-	<br> 
+	<br>Excluir palavras/preposições (Separar as palavras por virgula!):<br><textarea rows="4" cols="100" name="txtExcluir" placeholder="EX: AMOR,CAFE,CARRO"><?= $txtExcluir ?></textarea> 
+	<br>
+	<br>Manter somente essas palavras (Separar as palavras por virgula!):<br><textarea rows="4" cols="100" name="txtManter" placeholder="EX:RATO,REI,ROER"><?= $txtManter ?></textarea> 
+	<br>  
 	<br>Excluir números?<input type="checkbox" name="excNum" value="true" <?= $excNum ?>>
+	<br>  
+	<br>Gerar nuvem?<input type="checkbox" name="gNuvem" value="true" <?= $gNuvem ?>>
 	<br>
 	<br><input type="submit" name="enviar">
 </form>
@@ -118,29 +154,39 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 <br><br>
 <table border="1">
 	<tr>
-		<th>Frase</th>
+		<th>#</th>
+		<th>Palavra/Frase</th>
 		<th>Repetições</th>
 	</tr>
 	<?php
 	$arrPalavraRepeticoes = array_reverse($arrPalavraRepeticoes);
 	$valida=0;
+	$TotalRepeticoes=0;
+
 	foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
 	{
 		if ((strlen($palavra)>=$minLetras) && ($repeticoes >= $minRepet)) 
 		{
-			$valida = 1;
+			$valida += 1;
+			$TotalRepeticoes += $repeticoes;
 			echo "<tr>";
+			echo "<td>$valida</td>";
 			echo "<td>$palavra</td>";
 			echo "<td>$repeticoes</td>";
 			echo "</tr>";
 		}
 	}
+	echo "<tr>";
+	echo "<td>TOTAL</td>";
+	echo "<td>$TotalRepeticoes</td>";
+	echo "</tr>";
 
 	if ($valida==0) 
 	{
 		echo "<h4> Tente mudar as configurações acima <br> Sugiro alterar o campo [Palavras na frase] para 1 dessa forma você consegue analisar palavra a palavra! </h4>";
 	}
 	?>
+	<?= "<br>Quantidade de correlações: ".$valida; ?>
 </table>
 
 <br>
@@ -151,22 +197,42 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	<br><br><br>
 	<!-- <button onClick="window.location.reload();">reload Page</button> -->
 
-<!-------------------------------------------------------------------------------------------->
+<!--------------------------NUVEM DE PALAVRAS--------------------------------------------->
 <?php
+
+if ($gNuvem=="false") 
+{
+	die();
+}
+
+$maxPixel = 100;
 foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
 	{
 		if ((strlen($palavra)>=$minLetras) && ($repeticoes >= $minRepet)) 
 		{
 			$valida = 1;
-			$repeticoes *=20;
-			$possbilidade =  array(1,2,3,4);
-			$posicoes = array_rand($possbilidade) == 1?"vertical-lr":"horintal-tb";
-			$br = array_rand($possbilidade) == 1?"<br>":"";
-			echo'<text align="center"  style="font-size: '.$repeticoes.'px; font-family: Impact;  
-			writing-mode: '.$posicoes.';"> '
-			.$palavra.
-			' </text>'.$br;
+			$maiorNum = empty($maiorNum)? $repeticoes:$maiorNum ;
+			$pixeis = $repeticoes*$maxPixel/$maiorNum;
+
+			$posicoes = array("horintal-tb","vertical-lr","horintal-tb");
+			$colors=array("red","green","blue","yellow","brown");
+			$color=$colors[array_rand($colors)];
+			$posicao = $posicoes[array_rand($posicoes)];
+			$br = array_rand($posicoes) <> 1?"<br>":"";
+
+			 echo'<text 
+					align="center"
+					title="Repete: '.$repeticoes.' vezes"   
+					style="background-color: white;
+						   color:'.$color.' ;
+						   font-size: '.$pixeis.'px; 
+						   font-family: Impact;  
+						   writing-mode: '.$posicao.';" 
+					> '
+					.$palavra.
+				  ' </text>'.$br;
 		}
 	}
 ?>
 </div>
+
