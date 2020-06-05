@@ -26,7 +26,6 @@ class Vetor
 		$texto = str_replace(" ", ",", $texto);
 		$texto = str_replace("_", ",", $texto);
 		return $texto;
-
 	}
 
 	function tratamento($texto,$palavrasPorFrase=1,$txtExcluir="",$excNum)
@@ -81,7 +80,7 @@ class Vetor
 	}
 }
 
-// --------------------------------------------------------------------------------------------------
+// <!------------------------------------------------------------------------------------------>
 $textoExemplo = "O Rato Roeu O rato roeu a roupa do rei de Roma, O rato roeu a roupa do rei da Rússia, O rato roeu a roupa do rodovalho… O rato a roer roía. E a rosa Rita ramalho Do rato a roer se ria. A rata roeu a rolha Da garrafa da rainha.";
 $preposicoesExemplo = "por,a,para,de,em,o,pelo,ao,pro,do,no,a,pela,à,pra,da,na,os,pelos,aos,pros,dos,nos,as,pelas,às,pras,das,nas,um,dum,num,uma,duma,numa,uns,duns,nuns,umas,dumas,numas,ele,dele,nele,ela,dela,nela,eles,deles,neles,elas,delas,nelas,este,deste,neste,isto,disto,nisto,esse,desse,nesse,isso,disso,nisso,aquele,àquele,praquele,daquele,naquele,aquilo,àquilo,praquilo,daquilo,naquilo,boa tarde,bom dia, boa noite";
 
@@ -113,6 +112,7 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	<br><input type="submit" name="enviar">
 </form>
 
+<!-------------------------------------------------------------------------------------------->
 <?= "<br>Quantidade de caracteres analisados: ".strlen($texto); ?>
 <?= "<br>Quantidade de palavras analisadas: ".count($arrText); ?>
 <br><br>
@@ -151,7 +151,7 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	<br><br><br>
 	<!-- <button onClick="window.location.reload();">reload Page</button> -->
 
-
+<!-------------------------------------------------------------------------------------------->
 <?php
 foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
 	{
