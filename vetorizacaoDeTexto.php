@@ -146,7 +146,12 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 <br>
 <br>
 
-<div align="center">
+<div align="center" id="cloud" name="cloud">
+	<button onClick="history.go(0);">Refresh Page</button>
+	<br><br><br>
+	<!-- <button onClick="window.location.reload();">reload Page</button> -->
+
+
 <?php
 foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
 	{
@@ -154,7 +159,7 @@ foreach ($arrPalavraRepeticoes as $palavra => $repeticoes)
 		{
 			$valida = 1;
 			$repeticoes *=20;
-			$possbilidade =  array(1,0);
+			$possbilidade =  array(1,2,3,4);
 			$posicoes = array_rand($possbilidade) == 1?"vertical-lr":"horintal-tb";
 			$br = array_rand($possbilidade) == 1?"<br>":"";
 			echo'<text align="center"  style="font-size: '.$repeticoes.'px; font-family: Impact;  
