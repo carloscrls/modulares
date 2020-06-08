@@ -44,7 +44,6 @@ class Vetor
 		}
 		$arrModificado = explode(",", $texto);
 		return $arrModificado;
-
 	}
 
 	function vetoriza($texto,$palavrasPorFrase=1,$txtExcluir="",$excNum,$txtManter="")
@@ -52,31 +51,25 @@ class Vetor
 		$texto = $this->preparaTexto($texto,$excNum);
 		$arrExcluir = $this->preparaTexto($txtExcluir,$excNum);
 		$arrExcluir = explode(",",$arrExcluir);
-
 		foreach ($arrExcluir as $key => $palavraASerRemovida) 
 		{
 			$palavraASerRemovida = ",".$palavraASerRemovida.",";
 			$texto = str_replace($palavraASerRemovida, ",", $texto);
 		}
-
 		$array = explode(",", $texto);
-
 		if (!empty($txtManter)) 
 		{
 			$txtManter = $this->preparaTexto($txtManter);
 			$array = $this->mantemPalavrasExclusivas($array,$txtManter);
 		}
-
 		$txtFrase = NULL;
 		$separador=NULL;
-
 		foreach ($array as $key => $palavra) 
 		{	
 			$key +=1;
 			$txtFrase .= $separador.$palavra;
 			$separador = (($key%$palavrasPorFrase==0)&&($key<>0)) ? ",":" ";
 		}
-
 		$array = explode(",", $txtFrase);
 		return $array;
 	}
@@ -158,7 +151,6 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	$arrPalavraRepeticoes = array_reverse($arrPalavraRepeticoes);
 	$valida=0;
 	$TotalRepeticoes=0;
-
 	foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
 	{
 		if ((strlen($palavra)>=$minLetras) && ($repeticoes >= $minRepet)) 
@@ -176,7 +168,6 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	echo "<td>TOTAL</td>";
 	echo "<td>$TotalRepeticoes</td>";
 	echo "</tr>";
-
 	if ($valida==0) 
 	{
 		echo "<h4> Tente mudar as configurações acima <br> Sugiro alterar o campo [Palavras na frase] para 1 dessa forma você consegue analisar palavra a palavra! </h4>";
@@ -184,7 +175,6 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	?>
 	<?= "<br>Quantidade de correlações: ".$valida; ?>
 </table>
-
 <br>
 <br>
 
@@ -197,7 +187,6 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	<br>
 	<a href="https://educacao-executiva.fgv.br/rj/rio-de-janeiro/cursos/curta-media-duracao/curta-media-duracao-presencial/programacao-para-data-science?oferta=79177 ">Curso FGV que deu embasamento para criar a logica das funções</a>
 </div>
-
 
 <!--------------------------NUVEM DE PALAVRAS--------------------------------------------->
 <?php
@@ -223,13 +212,11 @@ foreach ($arrPalavraRepeticoes as $palavra => $repeticoes)
 			$valida = 1;
 			$maiorNum = empty($maiorNum)? $repeticoes:$maiorNum ;
 			$pixeis = $repeticoes*$maxPixel/$maiorNum;
-
 			$posicoes = array("horintal-tb","vertical-lr","horintal-tb");
 			$colors=array("red","green","blue","yellow","brown");
 			$color=$colors[array_rand($colors)];
 			$posicao = $posicoes[array_rand($posicoes)];
 			$br = array_rand($posicoes) <> 1?"<br>":"";
-
 			 echo'<text 
 					align="center"
 					title="Repete: '.$repeticoes.' vezes"   
@@ -245,13 +232,3 @@ foreach ($arrPalavraRepeticoes as $palavra => $repeticoes)
 	}
 ?>
 </div>
-
-
-
-
-
-
-
-
-
-
