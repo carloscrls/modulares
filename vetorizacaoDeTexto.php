@@ -165,6 +165,7 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 		}
 	}
 	echo "<tr>";
+	echo "<td>#</td>";
 	echo "<td>TOTAL</td>";
 	echo "<td>$TotalRepeticoes</td>";
 	echo "</tr>";
