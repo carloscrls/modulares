@@ -89,8 +89,8 @@ class Vetor
 		{
 			if ((!in_array($chave, $arrVerificado))&&(!empty($chave))) 
 			{
-			$countRepeticoes = $this->contaRepeticoes($chave,$arrText);
-			$arrPalavraRepeticoes += array("$chave"  =>"$countRepeticoes");
+				$countRepeticoes = $this->contaRepeticoes($chave,$arrText);
+				$arrPalavraRepeticoes += array("$chave"  =>"$countRepeticoes");
 			}
 			array_push($arrVerificado, $chave);
 		}
