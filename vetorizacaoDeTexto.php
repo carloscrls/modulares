@@ -118,7 +118,8 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 ?>
 
 <form method="POST">
-	TEXTO:<br><textarea rows="4" cols="100" name="texto"><?= $texto ?></textarea>
+	TEXTO:
+	<br><textarea rows="4" cols="100" name="texto"><?= $texto ?></textarea>
 	<br>
 	<br>Palavras para compor uma frase =<input type="number" name="palavrasPorFrase" value="<?= $palavrasPorFrase ?>"> OBS: 3 recomendado para textos grandes
 	<br>
