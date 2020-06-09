@@ -151,13 +151,13 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	<?php
 	$arrPalavraRepeticoes = array_reverse($arrPalavraRepeticoes);
 	$valida=0;
-	$TotalRepeticoes=0;
+	$totalRepeticoes=0;
 	foreach ($arrPalavraRepeticoes as $palavra => $repeticoes) 
 	{
 		if ((strlen($palavra)>=$minLetras) && ($repeticoes >= $minRepet)) 
 		{
 			$valida += 1;
-			$TotalRepeticoes += $repeticoes;
+			$totalRepeticoes += $repeticoes;
 			echo "<tr>";
 			echo "<td>$valida</td>";
 			echo "<td>$palavra</td>";
@@ -168,7 +168,7 @@ $arrPalavraRepeticoes = $vetor->listaRepeticoes($arrText);
 	echo "<tr>";
 	echo "<td>#</td>";
 	echo "<td>TOTAL</td>";
-	echo "<td>$TotalRepeticoes</td>";
+	echo "<td>$totalRepeticoes</td>";
 	echo "</tr>";
 	if ($valida==0) 
 	{
