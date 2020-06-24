@@ -157,6 +157,8 @@ if ($gNuvem=="checked")
 <?php
 }
 ?>
+
+
   <!--------------------------------RESULTADO -------------------------------------------------->
   <?php  $resultadoLbl = $textoExemplo==$texto? "Resultado do <b>exemplo</b> acima <br><label>Altere o texto a ser trabalhado acima</label>": "Resultado" ?>
   <br>
